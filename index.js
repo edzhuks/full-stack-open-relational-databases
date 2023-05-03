@@ -2,7 +2,7 @@ require('dotenv').config()
 const { Sequelize, Model, DataTypes } = require('sequelize')
 const express = require('express')
 const app = express()
-
+app.use(express.json())
 const sequelize = new Sequelize(process.env.DATABASE_URL)
 
 class Blog extends Model {}
@@ -16,21 +16,7 @@ Blog.init(
   },
   { sequelize, underscored: true, timestamps: false, modelName: 'blog' }
 )
-
-const main = async () => {
-  try {
-    await sequelize.authenticate()
-    const blogs = await Blog.findAll()
-    blogs.forEach((blog) => {
-      console.log(`${blog.author}: '${blog.title}', ${blog.likes} likes`)
-    })
-    sequelize.close()
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
-}
-
-main()
+Blog.sync()
 
 app.get('/api/blogs', async (req, res) => {
   const notes = await Blog.findAll()
@@ -44,6 +30,17 @@ app.post('/api/blogs', async (req, res) => {
     res.json(blog)
   } catch (error) {
     return res.status(400).json({ error })
+  }
+})
+
+app.delete('/api/blogs/:id', async (req, res) => {
+  const blog = await Blog.findByPk(req.params.id)
+  if (blog) {
+    console.log(blog.toJSON())
+    await blog.destroy()
+    res.json(blog)
+  } else {
+    res.status(404).end()
   }
 })
 
