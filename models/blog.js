@@ -9,7 +9,7 @@ Blog.init(
     author: { type: DataTypes.TEXT },
     url: { type: DataTypes.TEXT, allowNull: false },
     title: { type: DataTypes.TEXT, allowNull: false },
-    likes: { type: DataTypes.INTEGER, default: 0 },
+    likes: { type: DataTypes.INTEGER, defaultValue: 0 },
   },
   { sequelize, underscored: true, timestamps: false, modelName: 'blog' }
 )
