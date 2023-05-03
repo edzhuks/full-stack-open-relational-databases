@@ -20,7 +20,7 @@ const tokenExtractor = (req, res, next) => {
       return res.status(401).json({ error: 'token invalid' + error })
     }
   } else {
-    return res.status(401).json({ error: 'token missing' })
+    return res.status(401).json({ error: 'token  missing' })
   }
   next()
 }
