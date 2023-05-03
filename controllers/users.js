@@ -56,4 +56,11 @@ router.put('/:username', async (req, res) => {
   }
 })
 
+router.post('/switchability/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id)
+  user.disabled = !user.disabled
+  await user.save()
+  res.json(user)
+})
+
 module.exports = router
