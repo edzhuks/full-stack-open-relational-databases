@@ -17,7 +17,7 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'SequelizeValidationError') {
-    return response.status(400).send({ error: 'wrong shape for request' })
+    return response.status(400).send({ error: error.errors[0].message })
   }
 
   next(error)
